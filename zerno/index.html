@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Зерно — экраны приложения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* Зерно: тёмный эспрессо, оранжевый акцент, молочный фон экранов */
+:root{
+  --ink:#17120F; --orange:#FF5B1F; --milk:#F4F2EF; --foam:#E3DED8; --line:#D2CCC5;
+  --muted:#6B645D; --card:#FFFFFF; --deep:#26201C; --soft:#A39C94;
+  --display:'Unbounded','Arial Black',sans-serif; --body:'Golos Text','Segoe UI',sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#1F1A17;color:var(--milk);font-family:var(--body)}
+.page{display:flex;flex-direction:column;gap:48px;padding:64px max(24px,4vw)}
+.head{display:flex;flex-direction:column;gap:12px;max-width:720px}
+.head h1{margin:0;font-family:var(--display);font-weight:600;font-size:56px;letter-spacing:-.02em;line-height:1}
+.head p{margin:0;font-size:18px;line-height:1.5;color:#D8D3CD}
+.board{display:flex;flex-wrap:wrap;gap:48px}
+.slot{display:flex;flex-direction:column;gap:16px}
+.slot>span{font-size:15px;color:var(--soft)}
+
+/* screen frame */
+.screen{width:390px;height:844px;border-radius:44px;overflow:hidden;background:var(--milk);color:var(--ink);display:flex;flex-direction:column;position:relative}
+.screen.dark{background:var(--ink);color:var(--milk)}
+.pad{padding:24px 20px 0;display:flex;flex-direction:column;gap:20px;flex:1;min-height:0}
+.top{height:54px;flex-shrink:0}
+
+/* type */
+.h1{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.1;letter-spacing:-.01em;margin:0}
+.h2{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.15;margin:0}
+.cap{font-size:13px;color:var(--muted)}
+.dark .cap{color:var(--soft)}
+.lbl{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.t15{font-size:15px}.t16{font-size:16px}.b{font-weight:600}.b7{font-weight:700}
+
+/* atoms */
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+.col{display:flex;flex-direction:column;gap:4px}
+.chip{border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:14px;white-space:nowrap}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#FFFFFF}
+.btn{height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600}
+.btn.orange{background:var(--orange);color:var(--ink)}
+.btn.ink{background:var(--ink);color:#FFFFFF;justify-content:space-between;padding:0 20px}
+.btn.ghost{border:1.5px solid currentColor}
+.plus{width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cup{border-radius:50%;flex-shrink:0}
+.item{background:var(--card);border-radius:20px;padding:12px;display:flex;align-items:center;gap:12px}
+.item .col{flex:1}
+.search{height:48px;border-radius:999px;background:var(--foam);display:flex;align-items:center;gap:10px;padding:0 18px;font-size:15px;color:var(--muted)}
+.seg{display:flex;background:var(--foam);border-radius:16px;padding:4px}
+.seg>div{flex:1;height:52px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;color:var(--muted)}
+.seg>div b{font-size:16px;color:var(--ink)}
+.seg>.on{background:#FFFFFF}
+.toggle{width:52px;height:32px;border-radius:999px;background:var(--ink);padding:4px;display:flex;justify-content:flex-end}
+.toggle>i{width:24px;height:24px;border-radius:50%;background:var(--orange)}
+.stepper{display:flex;align-items:center;gap:14px;border:1.5px solid var(--line);border-radius:999px;padding:4px 6px}
+.stepper>i{width:28px;height:28px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:600}
+.tabs{height:84px;flex-shrink:0;border-top:1.5px solid var(--foam);display:flex;justify-content:space-around;padding-top:10px;background:var(--milk)}
+.tabs>div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--soft)}
+.tabs>.on{color:var(--ink)}
+.bottom{padding:12px 20px 34px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="head">
+    <h1>Зерно</h1>
+    <p>Приложение кофейни: заказ навынос без очереди. Шесть экранов, iPhone 390×844. Для импорта в Figma откройте плагин html.to.design и вставьте ссылку на эту страницу.</p>
+  </div>
+
+  <div class="board">
+
+    <!-- 01 Start -->
+    <div class="slot">
+      <div class="screen" id="start">
+        <div style="height:430px;background:var(--orange);position:relative;overflow:hidden;flex-shrink:0">
+          <div style="position:absolute;left:-60px;top:170px;width:300px;height:300px;border-radius:50%;background:var(--ink)"></div>
+          <div style="position:absolute;left:30px;top:250px;width:120px;height:120px;border-radius:50%;background:var(--foam)"></div>
+          <div style="position:absolute;left:68px;top:288px;width:44px;height:44px;border-radius:50% 50% 50% 0;background:#FFFFFF;transform:rotate(-45deg)"></div>
+          <div style="position:absolute;right:28px;top:150px;width:110px;height:110px;border-radius:50%;border:14px solid var(--ink)"></div>
+          <div style="position:absolute;z-index:1;left:24px;top:76px;font-family:var(--display);font-weight:600;font-size:44px;color:var(--ink);letter-spacing:-.02em">Зерно</div>
+        </div>
+        <div class="pad" style="padding-top:28px">
+          <div class="col" style="gap:10px">
+            <p class="h1">Кофе без очереди</p>
+            <span class="t16" style="color:var(--muted);line-height:1.5">Закажите заранее и заберите готовый напиток, когда подойдёте.</span>
+          </div>
+          <div class="col" style="gap:10px">
+            <span class="lbl">Кофейни рядом</span>
+            <div class="item" style="border:1.5px solid var(--ink)">
+              <div class="col"><span class="t16 b">Пятницкая, 18</span><span class="cap">350 м · открыто до 22:00</span></div>
+              <div style="width:22px;height:22px;border-radius:50%;border:6px solid var(--orange)"></div>
+            </div>
+            <div class="item">
+              <div class="col"><span class="t16 b">Новокузнецкая, 7</span><span class="cap">900 м · открыто до 21:00</span></div>
+              <div style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line)"></div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom"><div class="btn orange">Перейти к меню</div></div>
+      </div>
+      <span>01 · Выбор кофейни</span>
+    </div>
+
+    <!-- 02 Menu -->
+    <div class="slot">
+      <div class="screen" id="menu">
+        <div class="top"></div>
+        <div class="pad" style="padding-top:8px;gap:18px">
+          <div class="row between">
+            <div class="col"><span class="cap">Пятницкая, 18</span><p class="h1">Доброе утро</p></div>
+            <div style="width:44px;height:44px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg></div>
+          </div>
+          <div class="search"><svg class="i" viewBox="0 0 24 24" style="width:20px;height:20px"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Найти напиток</div>
+          <div class="row" style="gap:8px"><span class="chip on">Кофе</span><span class="chip">Не кофе</span><span class="chip">Выпечка</span></div>
+          <div class="row" style="gap:12px">
+            <div style="flex:1;height:150px;border-radius:24px;background:var(--ink);color:#FFFFFF;padding:16px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden">
+              <div style="position:absolute;right:-24px;top:-24px;width:96px;height:96px;border-radius:50%;background:var(--orange)"></div>
+              <span class="lbl" style="color:var(--soft)">Новинка</span>
+              <div class="col"><span class="t16 b">Тыквенный латте</span><span class="cap" style="color:var(--soft)">300 мл · 290 ₽</span></div>
+            </div>
+            <div style="width:130px;height:150px;border-radius:24px;background:var(--orange);padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+              <span class="lbl" style="color:var(--ink)">Бонус</span>
+              <span class="t15 b" style="line-height:1.3">Каждая 7-я чашка в подарок</span>
+            </div>
+          </div>
+          <div class="col" style="gap:10px">
+            <div class="item"><div class="cup" style="width:52px;height:52px;background:#C98A5A"></div><div class="col"><span class="t16 b">Капучино</span><span class="cap">300 мл · 230 ₽</span></div><div class="plus"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2.4"><path d="M12 5v14M5 12h14"/></svg></div></div>
+            <div class="item"><div class="cup" style="width:52px;height:52px;background:#E8D2B8"></div><div class="col"><span class="t16 b">Флэт уайт</span><span class="cap">250 мл · 240 ₽</span></div><div class="plus"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2.4"><path d="M12 5v14M5 12h14"/></svg></div></div>
+            <div class="item"><div class="cup" style="width:52px;height:52px;background:#5A3A28"></div><div class="col"><span class="t16 b">Американо</span><span class="cap">300 мл · 180 ₽</span></div><div class="plus"><svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2.4"><path d="M12 5v14M5 12h14"/></svg></div></div>
+          </div>
+        </div>
+        <div style="padding:0 20px 12px;flex-shrink:0"><div class="btn ink"><span>Корзина · 2</span><span>510 ₽</span></div></div>
+        <div class="tabs">
+          <div class="on"><svg class="i" viewBox="0 0 24 24"><path d="M5 8h12v5a6 6 0 0 1-12 0z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 2.5v2M11 2.5v2M14 2.5v2"/></svg>Меню</div>
+          <div><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Заказы</div>
+          <div><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg>Профиль</div>
+        </div>
+      </div>
+      <span>02 · Меню</span>
+    </div>
+
+    <!-- 03 Drink -->
+    <div class="slot">
+      <div class="screen" id="drink">
+        <div style="height:300px;background:var(--orange);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0">
+          <div style="position:absolute;left:20px;top:62px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center"><svg class="i" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></svg></div>
+          <div style="width:180px;height:180px;border-radius:50%;background:#FFFFFF;display:flex;align-items:center;justify-content:center;margin-top:30px">
+            <div style="width:132px;height:132px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center">
+              <div style="width:52px;height:52px;border-radius:50% 50% 50% 0;background:#FFFFFF;transform:rotate(-45deg)"></div>
+            </div>
+          </div>
+        </div>
+        <div class="pad" style="gap:18px">
+          <div class="col" style="gap:6px"><p class="h1">Флэт уайт</p><span class="t15" style="color:var(--muted);line-height:1.45">Двойной эспрессо и тонкий слой бархатной молочной пены.</span></div>
+          <div class="col" style="gap:8px"><span class="lbl">Размер</span>
+            <div class="seg"><div><b>S</b>200 мл</div><div class="on"><b>M</b>250 мл</div><div><b>L</b>350 мл</div></div>
+          </div>
+          <div class="col" style="gap:8px"><span class="lbl">Молоко</span>
+            <div class="row" style="gap:8px;flex-wrap:wrap"><span class="chip">Обычное</span><span class="chip on">Овсяное +40 ₽</span><span class="chip">Миндальное +40 ₽</span></div>
+          </div>
+          <div class="row between"><span class="t16">Дополнительный шот</span><div class="stepper"><i>−</i><span class="b">0</span><i>+</i></div></div>
+          <div class="row between"><span class="t16">Без сахара</span><div class="toggle"><i></i></div></div>
+        </div>
+        <div class="bottom"><div class="btn orange">Добавить · 280 ₽</div></div>
+      </div>
+      <span>03 · Настройка напитка</span>
+    </div>
+
+    <!-- 04 Cart -->
+    <div class="slot">
+      <div class="screen" id="cart">
+        <div class="top"></div>
+        <div class="pad" style="padding-top:8px;gap:18px">
+          <div class="row" style="gap:14px">
+            <div style="width:44px;height:44px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center"><svg class="i" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></svg></div>
+            <p class="h1">Корзина</p>
+          </div>
+          <div class="col" style="gap:10px">
+            <div class="item"><div class="cup" style="width:52px;height:52px;background:#E8D2B8"></div><div class="col"><span class="t16 b">Флэт уайт</span><span class="cap">M · овсяное · 280 ₽</span></div><div class="stepper"><i>−</i><span class="b">1</span><i>+</i></div></div>
+            <div class="item"><div class="cup" style="width:52px;height:52px;background:#C98A5A"></div><div class="col"><span class="t16 b">Капучино</span><span class="cap">300 мл · 230 ₽</span></div><div class="stepper"><i>−</i><span class="b">1</span><i>+</i></div></div>
+          </div>
+          <div class="col" style="gap:8px"><span class="lbl">Когда забрать</span>
+            <div class="seg"><div class="on"><b>Как можно скорее</b>через 8 минут</div><div><b>Ко времени</b>выбрать</div></div>
+          </div>
+          <div class="col" style="gap:8px"><span class="lbl">Оплата</span>
+            <div class="item" style="justify-content:space-between">
+              <div class="row"><div style="width:44px;height:30px;border-radius:6px;background:var(--ink)"></div><div class="col"><span class="t15 b">Карта •• 1234</span><span class="cap">Списать бонусы: 0 ₽</span></div></div>
+              <svg class="i" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--muted)"><path d="M9.5 6l6 6-6 6"/></svg>
+            </div>
+          </div>
+          <div class="col" style="gap:8px;margin-top:auto;padding-bottom:4px">
+            <div class="row between t15"><span style="color:var(--muted)">Напитки</span><span>510 ₽</span></div>
+            <div class="row between t16 b7"><span>Итого</span><span>510 ₽</span></div>
+          </div>
+        </div>
+        <div class="bottom"><div class="btn orange">Оплатить 510 ₽</div></div>
+      </div>
+      <span>04 · Корзина</span>
+    </div>
+
+    <!-- 05 Status -->
+    <div class="slot">
+      <div class="screen dark" id="status">
+        <div class="top"></div>
+        <div class="pad" style="padding-top:8px;gap:24px">
+          <div class="row between"><span class="t15" style="color:var(--soft)">Заказ принят</span><span class="t15" style="color:var(--soft)">Пятницкая, 18</span></div>
+          <div class="col" style="align-items:center;gap:8px;padding:16px 0">
+            <span class="lbl" style="color:var(--soft)">Номер заказа</span>
+            <span style="font-family:var(--display);font-weight:600;font-size:140px;line-height:1;color:var(--orange)">47</span>
+            <span class="t16" style="color:#D8D3CD">Будет готов к 8:42</span>
+          </div>
+          <div style="height:6px;border-radius:999px;background:var(--deep)"><div style="width:55%;height:6px;border-radius:999px;background:var(--orange)"></div></div>
+          <div class="col" style="gap:16px">
+            <div class="row t16"><div style="width:24px;height:24px;border-radius:50%;background:var(--orange)"></div><span>Принят</span><span class="cap" style="margin-left:auto">8:34</span></div>
+            <div class="row t16"><div style="width:24px;height:24px;border-radius:50%;border:2px solid var(--orange);display:flex;align-items:center;justify-content:center"><div style="width:10px;height:10px;border-radius:50%;background:var(--orange)"></div></div><span class="b">Готовим</span></div>
+            <div class="row t16" style="color:var(--soft)"><div style="width:24px;height:24px;border-radius:50%;border:2px solid #4A423C"></div><span>Можно забирать</span></div>
+          </div>
+          <div style="background:var(--deep);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:6px">
+            <div class="row between t15"><span class="b">Флэт уайт M, овсяное</span><span>280 ₽</span></div>
+            <div class="row between t15"><span>Капучино 300 мл</span><span>230 ₽</span></div>
+          </div>
+        </div>
+        <div class="bottom"><div class="btn ghost" style="color:var(--milk)">Я уже в кофейне</div></div>
+      </div>
+      <span>05 · Статус заказа</span>
+    </div>
+
+    <!-- 06 Profile -->
+    <div class="slot">
+      <div class="screen" id="profile">
+        <div class="top"></div>
+        <div class="pad" style="padding-top:8px;gap:20px">
+          <div class="row" style="gap:14px">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:24px">М</div>
+            <div class="col"><p class="h2">Мария</p><span class="cap">+7 900 ••• •• 12</span></div>
+          </div>
+          <div style="background:var(--ink);color:#FFFFFF;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:14px">
+            <div class="row between"><span class="t16 b">Бонусная карта</span><span class="cap" style="color:var(--soft)">5 из 7</span></div>
+            <div class="row" style="gap:8px">
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;background:var(--orange)"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;background:var(--orange)"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;background:var(--orange)"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;background:var(--orange)"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;background:var(--orange)"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;border:2px dashed #6B645D"></div>
+              <div style="flex:1;aspect-ratio:1;border-radius:50%;border:2px solid var(--foam);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700">7</div>
+            </div>
+            <span class="cap" style="color:var(--soft)">Ещё 2 напитка, и седьмой будет в подарок</span>
+          </div>
+          <div class="col" style="gap:10px"><span class="lbl">Недавние заказы</span>
+            <div class="item"><div class="col"><span class="t15 b">Флэт уайт, капучино</span><span class="cap">Сегодня · Пятницкая, 18</span></div><span class="chip" style="padding:6px 12px;font-size:13px">Повторить</span></div>
+            <div class="item"><div class="col"><span class="t15 b">Американо, круассан</span><span class="cap">Вчера · Пятницкая, 18</span></div><span class="chip" style="padding:6px 12px;font-size:13px">Повторить</span></div>
+          </div>
+          <div class="col" style="gap:0">
+            <div class="row between t16" style="padding:14px 0;border-bottom:1.5px solid var(--foam)"><span>Способы оплаты</span><svg class="i" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--muted)"><path d="M9.5 6l6 6-6 6"/></svg></div>
+            <div class="row between t16" style="padding:14px 0"><span>Уведомления</span><svg class="i" viewBox="0 0 24 24" style="width:20px;height:20px;color:var(--muted)"><path d="M9.5 6l6 6-6 6"/></svg></div>
+          </div>
+        </div>
+        <div class="tabs">
+          <div><svg class="i" viewBox="0 0 24 24"><path d="M5 8h12v5a6 6 0 0 1-12 0z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 2.5v2M11 2.5v2M14 2.5v2"/></svg>Меню</div>
+          <div><svg class="i" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Заказы</div>
+          <div class="on"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/></svg>Профиль</div>
+        </div>
+      </div>
+      <span>06 · Профиль и бонусы</span>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>
