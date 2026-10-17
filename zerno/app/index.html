@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FF5B1F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="description" content="Зерно — кофе навынос без очереди">
+<title>Зерно</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ink:#17120F;--orange:#FF5B1F;--milk:#F4F2EF;--foam:#E3DED8;--line:#D2CCC5;--muted:#6B645D;--card:#FFFFFF;--deep:#26201C;--soft:#A39C94;--cream:#D8D3CD;
+  --display:'Unbounded','Arial Black',sans-serif;--body:'Golos Text','Segoe UI',system-ui,sans-serif;
+  --st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:#1F1A17;font-family:var(--body);color:var(--ink);font-size:15px}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input{font:inherit}
+.app{position:relative;max-width:430px;height:100%;margin:0 auto;background:var(--milk);display:flex;flex-direction:column;overflow:hidden}
+@media (min-width:600px){body{display:flex;align-items:center;justify-content:center;padding:24px}.app{height:min(880px,100%);width:400px;border-radius:44px;box-shadow:0 30px 80px rgba(0,0,0,.45)}}
+.app.dark{background:var(--ink)}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.pad{padding:calc(var(--st) + 16px) 20px 24px;display:flex;flex-direction:column;gap:18px}
+.foot{padding:8px 20px calc(var(--sb) + 16px);flex-shrink:0}
+.h1{font-family:var(--display);font-weight:600;font-size:28px;line-height:1.12;letter-spacing:-.01em;margin:0}
+.lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cap{font-size:13px;color:var(--muted)}
+.b{font-weight:600}
+.row{display:flex;align-items:center;gap:12px}
+.between{justify-content:space-between}
+.col{display:flex;flex-direction:column;gap:3px;min-width:0}
+.grow{flex:1;min-width:0}
+.btn{height:56px;width:100%;border-radius:20px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600}
+.btn.orange{background:var(--orange);color:var(--ink)}
+.btn.ink{background:var(--ink);color:#fff;justify-content:space-between;padding:0 20px}
+.btn.outline{border:1.5px solid var(--ink)}
+.btn.light{border:1.5px solid var(--milk);color:var(--milk)}
+.btn:disabled{opacity:.45;cursor:default}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chips.x{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -20px;padding:0 20px}
+.chips.x::-webkit-scrollbar{display:none}
+.chip{flex-shrink:0;border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-size:14px;white-space:nowrap}
+.chip.sm{padding:6px 12px;font-size:13px}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.item{background:var(--card);border-radius:20px;padding:12px;display:flex;align-items:center;gap:12px;text-align:left;width:100%}
+.cup{width:52px;height:52px;border-radius:50%;flex-shrink:0}
+.plus{width:36px;height:36px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ibtn{width:44px;height:44px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.search{height:48px;border-radius:24px;background:var(--foam);display:flex;align-items:center;gap:10px;padding:0 16px}
+.search input{flex:1;border:0;background:none;outline:none;font-size:15px;color:var(--ink);min-width:0}
+.seg{display:flex;background:var(--foam);border-radius:16px;padding:4px}
+.seg button{flex:1;min-height:52px;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:15px;font-weight:600;padding:6px 4px}
+.seg button small{font-size:12px;font-weight:400;color:var(--muted)}
+.seg button.on{background:#fff}
+.step{display:flex;align-items:center;gap:12px;border:1.5px solid var(--line);border-radius:999px;padding:4px}
+.step button{width:30px;height:30px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center}
+.step button:disabled{opacity:.35}
+.step span{min-width:16px;text-align:center;font-weight:600}
+.tog{width:52px;height:32px;border-radius:16px;padding:4px;display:flex;background:var(--line);flex-shrink:0}
+.tog i{width:24px;height:24px;border-radius:50%;background:#fff}
+.tog.on{background:var(--ink);justify-content:flex-end}.tog.on i{background:var(--orange)}
+.tabs{display:flex;justify-content:space-around;border-top:1.5px solid var(--foam);padding:10px 8px calc(var(--sb) + 10px);background:var(--milk);flex-shrink:0}
+.tabs button{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--soft);min-width:72px;position:relative}
+.tabs button.on{color:var(--ink)}
+.dot{position:absolute;top:-2px;left:calc(50% + 6px);width:9px;height:9px;border-radius:50%;background:var(--orange);border:1.5px solid var(--milk)}
+svg.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.toast{position:absolute;left:50%;top:calc(var(--st) + 12px);transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;white-space:nowrap;z-index:9;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast svg{color:var(--orange);width:18px;height:18px;stroke-width:2.4}
+.drop{border-radius:50% 50% 50% 0;background:#fff;transform:rotate(-45deg)}
+.sum{display:flex;justify-content:space-between}
+button:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+@media (prefers-reduced-motion:no-preference){.screen{animation:in .22s ease both}@keyframes in{from{transform:translateY(8px)}to{transform:none}}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+/* ---------- данные ---------- */
+const SHOPS=[{id:'p18',name:'Пятницкая, 18',distance:'350 м',hours:'открыто до 22:00'},{id:'n7',name:'Новокузнецкая, 7',distance:'900 м',hours:'открыто до 21:00'}];
+const CATS=[{id:'coffee',title:'Кофе'},{id:'noncoffee',title:'Не кофе'},{id:'bakery',title:'Выпечка'}];
+const MILKS=[{id:'regular',title:'Обычное',price:0},{id:'oat',title:'Овсяное',price:40},{id:'almond',title:'Миндальное',price:40},{id:'lactosefree',title:'Без лактозы',price:30}];
+const SHOT=50, FREE_AT=7, PREP=8;
+const sz=(s,m,l)=>[{id:'S',ml:s,d:-30},{id:'M',ml:m,d:0},{id:'L',ml:l,d:50}];
+const P=[
+ {id:'flat',cat:'coffee',name:'Флэт уайт',price:240,color:'#E8D2B8',milk:1,shot:1,sizes:sz(200,250,350),desc:'Двойной эспрессо и тонкий слой бархатной молочной пены.'},
+ {id:'capp',cat:'coffee',name:'Капучино',price:230,color:'#C98A5A',milk:1,shot:1,sizes:sz(250,300,400),desc:'Эспрессо и плотная молочная пена. Классика на каждый день.'},
+ {id:'amer',cat:'coffee',name:'Американо',price:180,color:'#5A3A28',milk:0,shot:1,sizes:sz(250,300,400),desc:'Эспрессо, разбавленный горячей водой. Мягкий и долгий вкус.'},
+ {id:'raf',cat:'coffee',name:'Раф ванильный',price:270,color:'#B0623A',milk:1,shot:0,sizes:sz(250,300,400),desc:'Эспрессо, сливки и ванильный сахар, взбитые вместе.'},
+ {id:'pump',cat:'coffee',name:'Тыквенный латте',price:290,color:'#E07A3F',milk:1,shot:1,sizes:sz(250,300,400),desc:'Латте с пюре из запечённой тыквы и пряностями. Сезонный напиток.'},
+ {id:'esp',cat:'coffee',name:'Эспрессо',price:150,color:'#2E1D14',milk:0,shot:1,sizes:null,desc:'Тридцать миллилитров концентрированного вкуса.'},
+ {id:'cocoa',cat:'noncoffee',name:'Какао',price:220,color:'#7A4A33',milk:1,shot:0,sizes:sz(250,300,400),desc:'Настоящий какао-порошок и горячее молоко.'},
+ {id:'matcha',cat:'noncoffee',name:'Матча латте',price:280,color:'#8DB46A',milk:1,shot:0,sizes:sz(250,300,400),desc:'Японский зелёный чай матча с молоком.'},
+ {id:'tea',cat:'noncoffee',name:'Облепиховый чай',price:200,color:'#F2A93B',milk:0,shot:0,sizes:sz(300,400,500),desc:'Облепиха, апельсин и мёд. Согревает в любую погоду.'},
+ {id:'crois',cat:'bakery',name:'Круассан',price:190,color:'#D9A35F',milk:0,shot:0,sizes:null,desc:'Слоёный, на сливочном масле. Выпекаем каждое утро.'},
+ {id:'cinna',cat:'bakery',name:'Синнабон',price:210,color:'#C78C5B',milk:0,shot:0,sizes:null,desc:'Булочка с корицей и сливочным кремом.'},
+ {id:'banana',cat:'bakery',name:'Банановый хлеб',price:170,color:'#A8763F',milk:0,shot:0,sizes:null,desc:'Влажный кекс из спелых бананов с грецким орехом.'},
+];
+const prod=id=>P.find(p=>p.id===id), shop=id=>SHOPS.find(s=>s.id===id), milk=id=>MILKS.find(m=>m.id===id);
+const isDrink=p=>p.cat!=='bakery';
+const rub=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' ₽';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hm=(d)=>`${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
+const plus=m=>hm(new Date(Date.now()+m*60000));
+function slots(){const s=new Date(Date.now()+15*60000);s.setSeconds(0,0);s.setMinutes(Math.ceil(s.getMinutes()/10)*10);return Array.from({length:6},(_,i)=>{const d=new Date(s.getTime()+i*600000);return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`})}
+
+function makeLine(p,o={}){
+  const size=p.sizes?(o.size||'M'):null, m=p.milk?(o.milk||'regular'):null, shots=p.shot?(o.shots||0):0, noSugar=!!o.noSugar;
+  const so=size?p.sizes.find(s=>s.id===size):null, mo=m?milk(m):null;
+  const unit=p.price+(so?so.d:0)+(mo?mo.price:0)+shots*SHOT;
+  const parts=[]; if(so)parts.push(`${so.id} · ${so.ml} мл`); if(mo&&mo.id!=='regular')parts.push(mo.title.toLowerCase()); if(shots)parts.push(`+${shots} шот`); if(noSugar)parts.push('без сахара');
+  return {key:[p.id,size,m,shots,noSugar].join('|'),productId:p.id,title:p.name,subtitle:parts.join(', '),unit,qty:o.qty||1};
+}
+
+/* ---------- состояние (хранится в этом браузере) ---------- */
+const KEY='zerno.v1';
+let S={shopId:null,name:'',phone:'',cart:[],orders:[],stamps:0,freeDrinks:0};
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s)S={...S,...s}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let tab='menu', stack=[], ui={cat:'coffee',q:''};
+
+function totals(useFree){
+  const sub=S.cart.reduce((a,l)=>a+l.unit*l.qty,0);
+  const dl=S.cart.filter(l=>isDrink(prod(l.productId)));
+  const disc=useFree&&dl.length?Math.min(...dl.map(l=>l.unit)):0;
+  return {sub,disc,total:sub-disc,drinks:dl.reduce((a,l)=>a+l.qty,0),count:S.cart.reduce((a,l)=>a+l.qty,0)};
+}
+function addLine(line){const i=S.cart.findIndex(l=>l.key===line.key);if(i>=0)S.cart[i].qty+=line.qty;else S.cart.push(line);save()}
+function qty(key,d){S.cart=S.cart.map(l=>l.key===key?{...l,qty:l.qty+d}:l).filter(l=>l.qty>0);save()}
+function placeOrder(pickup,useFree){
+  const t=totals(useFree&&S.freeDrinks>0), earned=S.stamps+t.drinks, now=Date.now();
+  const o={id:String(now),number:10+Math.floor(Math.random()*90),lines:S.cart,total:t.total,discount:t.disc,shopName:shop(S.shopId)?.name||'',
+    pickup:pickup==='asap'?`к ${plus(PREP)}`:`к ${pickup}`,acceptedAt:plus(0),createdAt:now,arrived:false,picked:false};
+  S.freeDrinks=S.freeDrinks-(t.disc>0?1:0)+Math.floor(earned/FREE_AT); S.stamps=earned%FREE_AT;
+  S.orders.unshift(o); S.cart=[]; save(); return o.id;
+}
+// Демо без сервера: статус считается по времени с момента заказа.
+function status(o){if(o.picked)return'done';const s=(Date.now()-o.createdAt)/1000;return s<4?'accepted':s<14?'brewing':'ready'}
+function readyAt(o){return hm(new Date(o.createdAt+14000))}
+
+/* ---------- иконки ---------- */
+const IC={back:'<path d="M14.5 6 8.5 12l6 6"/>',chev:'<path d="M9.5 6l6 6-6 6"/>',plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',check:'<path d="M5 12.5 10 17l9-10"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',user:'<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"/>',
+cup:'<path d="M5 8h12v5a6 6 0 0 1-12 0z"/><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17M8 2.5v2M11 2.5v2M14 2.5v2"/>',list:'<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+pin:'<path d="M12 21s6-5.6 6-11a6 6 0 0 0-12 0c0 5.4 6 11 6 11z"/><circle cx="12" cy="10" r="2"/>',close:'<path d="M6 6l12 12M18 6 6 18"/>'};
+const ic=(n,st='')=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true" style="${st}">${IC[n]}</svg>`;
+
+/* ---------- навигация ---------- */
+const $app=document.getElementById('app');
+const nav={push(n,p={}){stack.push({n,p});render(true)},replace(n,p={}){stack.pop();stack.push({n,p});render(true)},back(){stack.pop();render(true)},tab(t){stack=[];tab=t;render(true)}};
+let toastT,timer;
+function toast(t){clearTimeout(toastT);document.querySelector('.toast')?.remove();const el=document.createElement('div');el.className='toast';el.setAttribute('role','status');el.innerHTML=ic('check')+esc(t);$app.appendChild(el);toastT=setTimeout(()=>el.remove(),2200)}
+
+function render(top){
+  clearInterval(timer);
+  H.map={};
+  const cur=stack[stack.length-1];
+  let html;
+  if(!S.shopId) html=Start();
+  else if(cur) html={drink:Drink,cart:Cart,status:Status}[cur.n](cur.p);
+  else html={menu:Menu,orders:Orders,profile:Profile}[tab]()+Tabs();
+  $app.classList.toggle('dark',!!cur&&cur.n==='status');
+  const sc=$app.querySelector('.scroll'), y=sc&&!top?sc.scrollTop:0;
+  $app.innerHTML=html;
+  const ns=$app.querySelector('.scroll'); if(ns)ns.scrollTop=y;
+  bind();
+  if(S.orders.some(o=>!o.picked&&status(o)!=='ready')&&(cur?.n==='status'||tab==='orders'))timer=setInterval(()=>render(false),1000);
+}
+const H=(fn)=>{const id='h'+Math.random().toString(36).slice(2,9);H.map[id]=fn;return id};H.map={};
+function bind(){
+  $app.querySelectorAll('[data-on]').forEach(el=>{const fn=H.map[el.dataset.on];el.addEventListener(el.tagName==='INPUT'?'input':'click',e=>fn(e,el))});
+}
+const on=fn=>`data-on="${H(fn)}"`;
+
+/* ---------- экраны ---------- */
+function Start(){
+  let picked=S._picked||SHOPS[0].id;
+  return `<div class="scroll screen"><div style="height:400px;background:var(--orange);position:relative;overflow:hidden;padding:calc(var(--st) + 24px) 24px 0">
+    <div style="position:absolute;left:-60px;top:160px;width:300px;height:300px;border-radius:50%;background:var(--ink)"></div>
+    <div style="position:absolute;right:28px;top:150px;width:110px;height:110px;border-radius:50%;border:14px solid var(--ink)"></div>
+    <div style="position:absolute;left:30px;top:240px;width:120px;height:120px;border-radius:50%;background:var(--foam);display:flex;align-items:center;justify-content:center"><div class="drop" style="width:44px;height:44px"></div></div>
+    <div style="position:relative;font-family:var(--display);font-weight:600;font-size:44px;letter-spacing:-.02em">Зерно</div></div>
+    <div class="pad" style="padding-top:28px;gap:22px">
+      <div class="col" style="gap:10px"><p class="h1">Кофе без очереди</p><span style="font-size:16px;line-height:1.45;color:var(--muted)">Закажите заранее и заберите готовый напиток, когда подойдёте.</span></div>
+      <div class="col" style="gap:10px"><span class="lbl">Кофейни рядом</span>
+      ${SHOPS.map(s=>`<button class="item" role="radio" aria-checked="${s.id===picked}" style="border:1.5px solid ${s.id===picked?'var(--ink)':'transparent'}" ${on(()=>{S._picked=s.id;render()})}>
+        <div class="col grow"><span class="b" style="font-size:16px">${s.name}</span><span class="cap">${s.distance} · ${s.hours}</span></div>
+        <div style="width:22px;height:22px;border-radius:50%;${s.id===picked?'border:6px solid var(--orange)':'border:1.5px solid var(--line)'}"></div></button>`).join('')}
+      </div></div></div>
+    <div class="foot"><button class="btn orange" ${on(()=>{S.shopId=S._picked||SHOPS[0].id;delete S._picked;save();render(true)})}>Перейти к меню</button></div>`;
+}
+
+function greeting(){const h=new Date().getHours();return h<12?'Доброе утро':h<18?'Добрый день':'Добрый вечер'}
+function Menu(){
+  const q=ui.q.trim().toLowerCase(), list=q?P.filter(p=>p.name.toLowerCase().includes(q)):P.filter(p=>p.cat===ui.cat);
+  const t=totals(false), f=prod('pump'), left=FREE_AT-S.stamps;
+  return `<div class="scroll screen"><div class="pad">
+    <div class="row between"><div class="col grow">
+      <button class="row cap" style="gap:4px" ${on(()=>{S.shopId=null;save();render(true)})} aria-label="Сменить кофейню">${ic('pin','width:16px;height:16px')}${esc(shop(S.shopId)?.name||'')}</button>
+      <p class="h1">${greeting()}</p></div>
+      <button class="ibtn" aria-label="Профиль" ${on(()=>nav.tab('profile'))}>${ic('user')}</button></div>
+    <label class="search">${ic('search','width:20px;height:20px;color:var(--muted)')}<input id="q" value="${esc(ui.q)}" placeholder="Найти напиток" aria-label="Поиск" ${on((e)=>{ui.q=e.target.value;render();const i=document.getElementById('q');i.focus();i.setSelectionRange(i.value.length,i.value.length)})}>${ui.q?`<button aria-label="Очистить" ${on(()=>{ui.q='';render()})}>${ic('close','width:18px;height:18px;color:var(--muted)')}</button>`:''}</label>
+    ${q?'':`<div class="chips x">${CATS.map(c=>`<button class="chip ${c.id===ui.cat?'on':''}" ${on(()=>{ui.cat=c.id;render()})}>${c.title}</button>`).join('')}</div>
+    <div class="row" style="align-items:stretch">
+      <button class="grow" style="height:150px;border-radius:24px;background:var(--ink);color:#fff;padding:16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;position:relative;overflow:hidden" ${on(()=>nav.push('drink',{id:f.id}))}>
+        <div style="position:absolute;right:-24px;top:-24px;width:96px;height:96px;border-radius:50%;background:var(--orange)"></div>
+        <span class="lbl" style="color:var(--soft)">Новинка</span><span class="col"><span class="b" style="font-size:16px">${f.name}</span><span class="cap" style="color:var(--soft)">от ${rub(f.price-30)}</span></span></button>
+      <button style="width:130px;height:150px;border-radius:24px;background:var(--orange);padding:16px;display:flex;flex-direction:column;justify-content:space-between;text-align:left" ${on(()=>nav.tab('profile'))}>
+        <span class="lbl" style="color:var(--ink)">Бонус</span><span class="b" style="font-size:15px;line-height:1.3">${S.freeDrinks>0?`${S.freeDrinks} напиток в подарок`:`Ещё ${left} до подарка`}</span></button>
+    </div>`}
+    <div class="col" style="gap:10px">${list.length?list.map(p=>`<div class="item">
+      <button class="row grow" style="text-align:left" ${on(()=>nav.push('drink',{id:p.id}))}><div class="cup" style="background:${p.color}"></div>
+      <span class="col grow"><span class="b" style="font-size:16px">${p.name}</span><span class="cap">${p.sizes?p.sizes[1].ml+' мл · ':''}${rub(p.price)}</span></span></button>
+      <button class="plus" aria-label="Добавить ${p.name}" ${on(()=>{addLine(makeLine(p));toast(p.name+' в корзине');render()})}>${ic('plus','width:18px;height:18px;stroke-width:2.4')}</button></div>`).join(''):`<span class="cap" style="font-size:15px">Ничего не нашли. Попробуйте другое название.</span>`}</div>
+  </div></div>
+  ${t.count?`<div style="padding:0 20px 12px;flex-shrink:0"><button class="btn ink" ${on(()=>nav.push('cart'))}><span>Корзина · ${t.count}</span><span>${rub(t.sub)}</span></button></div>`:''}`;
+}
+
+const dr={};
+function Drink(p){
+  const pr=prod(p.id); if(dr.id!==p.id){Object.assign(dr,{id:p.id,size:'M',milk:'regular',shots:0,noSugar:false,qty:1})}
+  const line=makeLine(pr,dr);
+  return `<div class="scroll screen">
+    <div style="height:320px;background:var(--orange);display:flex;align-items:center;justify-content:center;position:relative;padding-top:var(--st)">
+      <button class="ibtn" aria-label="Назад" style="position:absolute;left:20px;top:calc(var(--st) + 12px);background:rgba(255,255,255,.9)" ${on(()=>nav.back())}>${ic('back')}</button>
+      <div style="width:184px;height:184px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;margin-top:24px">
+        <div style="width:136px;height:136px;border-radius:50%;background:${pr.color};display:flex;align-items:center;justify-content:center">${pr.milk?'<div class="drop" style="width:50px;height:50px"></div>':''}</div></div></div>
+    <div class="pad" style="padding-top:22px;gap:20px">
+      <div class="col" style="gap:6px"><p class="h1">${pr.name}</p><span style="line-height:1.45;color:var(--muted)">${pr.desc}</span></div>
+      ${pr.sizes?`<div class="col" style="gap:8px"><span class="lbl">Размер</span><div class="seg">${pr.sizes.map(s=>`<button class="${s.id===dr.size?'on':''}" ${on(()=>{dr.size=s.id;render()})}>${s.id}<small>${s.ml} мл</small></button>`).join('')}</div></div>`:''}
+      ${pr.milk?`<div class="col" style="gap:8px"><span class="lbl">Молоко</span><div class="chips">${MILKS.map(m=>`<button class="chip ${m.id===dr.milk?'on':''}" ${on(()=>{dr.milk=m.id;render()})}>${m.title}${m.price?' +'+m.price+' ₽':''}</button>`).join('')}</div></div>`:''}
+      ${pr.shot?`<div class="row between"><span class="col"><span style="font-size:16px">Дополнительный шот</span><span class="cap">+${rub(SHOT)} за каждый</span></span>${stepper(dr.shots,0,3,v=>{dr.shots=v;render()})}</div>`:''}
+      ${isDrink(pr)?`<div class="row between"><span style="font-size:16px">Без сахара</span><button class="tog ${dr.noSugar?'on':''}" role="switch" aria-checked="${dr.noSugar}" aria-label="Без сахара" ${on(()=>{dr.noSugar=!dr.noSugar;render()})}><i></i></button></div>`:''}
+      <div class="row between"><span style="font-size:16px">Количество</span>${stepper(dr.qty,1,10,v=>{dr.qty=v;render()})}</div>
+    </div></div>
+    <div class="foot"><button class="btn orange" ${on(()=>{addLine(line);toast(pr.name+' в корзине');dr.id=null;nav.back()})}>Добавить · ${rub(line.unit*dr.qty)}</button></div>`;
+}
+function stepper(v,min,max,set){return `<div class="step"><button aria-label="Меньше" ${v<=min?'disabled':''} ${on(()=>set(v-1))}>${ic('minus','width:16px;height:16px;stroke-width:2.4')}</button><span>${v}</span><button aria-label="Больше" ${v>=max?'disabled':''} ${on(()=>set(v+1))}>${ic('plus','width:16px;height:16px;stroke-width:2.4')}</button></div>`}
+
+const cs={mode:'asap',slot:null,free:false};
+function Cart(){
+  const sl=slots(); if(!cs.slot||!sl.includes(cs.slot))cs.slot=sl[0];
+  const canFree=S.freeDrinks>0, t=totals(cs.free&&canFree);
+  return `<div class="scroll screen"><div class="pad">
+    <div class="row" style="gap:14px"><button class="ibtn" aria-label="Назад" ${on(()=>nav.back())}>${ic('back')}</button><p class="h1">Корзина</p></div>
+    ${!S.cart.length?`<div class="col" style="gap:14px;padding-top:40px"><span style="font-size:16px;color:var(--muted)">В корзине пока пусто. Выберите напиток в меню.</span><button class="btn outline" ${on(()=>nav.back())}>Открыть меню</button></div>`:`
+    <div class="col" style="gap:10px">${S.cart.map(l=>`<div class="item"><div class="cup" style="background:${prod(l.productId).color}"></div><span class="col grow"><span class="b" style="font-size:16px">${l.title}</span><span class="cap">${l.subtitle?esc(l.subtitle)+' · ':''}${rub(l.unit)}</span></span>${stepper(l.qty,0,20,v=>{qty(l.key,v-l.qty);render()})}</div>`).join('')}</div>
+    <div class="col" style="gap:8px"><span class="lbl">Когда забрать</span>
+      <div class="seg"><button class="${cs.mode==='asap'?'on':''}" ${on(()=>{cs.mode='asap';render()})}>Как можно скорее<small>через ${PREP} минут</small></button><button class="${cs.mode==='time'?'on':''}" ${on(()=>{cs.mode='time';render()})}>Ко времени<small>${cs.mode==='time'?cs.slot:'выбрать'}</small></button></div>
+      ${cs.mode==='time'?`<div class="chips" style="padding-top:4px">${sl.map(s=>`<button class="chip sm ${s===cs.slot?'on':''}" ${on(()=>{cs.slot=s;render()})}>${s}</button>`).join('')}</div>`:''}</div>
+    <div class="col" style="gap:8px"><span class="lbl">Где забрать</span><div class="item">${ic('pin','color:var(--muted)')}<span class="col grow"><span class="b">${esc(shop(S.shopId)?.name||'')}</span><span class="cap">Оплата в кофейне при получении</span></span></div></div>
+    ${canFree?`<div class="item"><span class="col grow"><span class="b">Напиток в подарок</span><span class="cap">Самый недорогой напиток бесплатно</span></span><button class="tog ${cs.free?'on':''}" role="switch" aria-checked="${cs.free}" aria-label="Использовать подарок" ${on(()=>{cs.free=!cs.free;render()})}><i></i></button></div>`:''}
+    <div class="col" style="gap:6px"><div class="sum"><span style="color:var(--muted)">Позиции</span><span>${rub(t.sub)}</span></div>${t.disc?`<div class="sum"><span style="color:var(--muted)">Подарок</span><span>−${rub(t.disc)}</span></div>`:''}<div class="sum b" style="font-size:17px;font-weight:700"><span>Итого</span><span>${rub(t.total)}</span></div></div>`}
+  </div></div>
+  ${S.cart.length?`<div class="foot"><button class="btn orange" ${on(()=>{const id=placeOrder(cs.mode==='asap'?'asap':cs.slot,cs.free&&canFree);cs.free=false;nav.replace('status',{id})})}>Оформить заказ · ${rub(t.total)}</button></div>`:''}`;
+}
+
+function Status(p){
+  const o=S.orders.find(x=>x.id===p.id); if(!o){nav.back();return''}
+  const st=status(o), idx=['accepted','brewing','ready','done'].indexOf(st), done=st==='done', ready=st==='ready';
+  const head=done?'Заказ получен':ready?'Заказ готов':'Заказ принят';
+  const sub=done?'Спасибо! Ждём вас снова.':ready?`Готов с ${readyAt(o)}, заберите на стойке`:`Будет готов ${o.pickup}`;
+  const steps=[['accepted','Принят'],['brewing','Готовим'],['ready','Можно забирать']];
+  return `<div class="scroll screen"><div class="pad" style="gap:24px;color:var(--milk)">
+    <div class="row between"><button class="ibtn" aria-label="Закрыть" style="background:var(--deep);color:var(--milk)" ${on(()=>nav.back())}>${ic('close')}</button><span style="color:var(--soft)">${esc(o.shopName)}</span></div>
+    <div class="col" style="align-items:center;gap:6px;text-align:center"><span class="lbl" style="color:var(--soft)">${head}</span>
+      <span style="font-family:var(--display);font-weight:600;font-size:140px;line-height:1.05;color:var(--orange);letter-spacing:-4px">${o.number}</span>
+      <span style="font-size:16px;color:var(--cream)">${sub}</span></div>
+    <div style="height:6px;border-radius:3px;background:var(--deep);overflow:hidden"><div style="height:6px;width:${[20,55,100,100][idx]}%;background:var(--orange);border-radius:3px;transition:width .5s"></div></div>
+    <div class="col" style="gap:16px">${steps.map(([id,t],i)=>{const passed=idx>i||done, cur=idx===i&&!done;
+      return `<div class="row"><div style="width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;${passed?'background:var(--orange)':cur?'border:2px solid var(--orange)':'border:2px solid #4A423C'}">${cur?'<div style="width:10px;height:10px;border-radius:50%;background:var(--orange)"></div>':''}</div>
+      <span style="font-size:16px;${cur?'font-weight:600;':''}color:${passed||cur?'var(--milk)':'var(--soft)'}">${t}</span>${id==='accepted'?`<span class="cap" style="margin-left:auto;color:var(--soft)">${o.acceptedAt}</span>`:''}</div>`}).join('')}</div>
+    <div style="background:var(--deep);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:8px">
+      ${o.lines.map(l=>`<div class="sum" style="gap:12px"><span>${l.qty>1?l.qty+' × ':''}${l.title}${l.subtitle?', '+esc(l.subtitle):''}</span><span style="white-space:nowrap">${rub(l.unit*l.qty)}</span></div>`).join('')}
+      ${o.discount?`<div class="sum" style="color:var(--soft)"><span>Подарок</span><span>−${rub(o.discount)}</span></div>`:''}
+      <div class="sum b" style="border-top:1px solid #3A322D;padding-top:8px"><span>Итого, оплата в кофейне</span><span>${rub(o.total)}</span></div></div>
+  </div></div>
+  ${done?'':`<div class="foot">${ready?`<button class="btn orange" ${on(()=>{o.picked=true;save();render()})}>Я забрал заказ</button>`:o.arrived?`<button class="btn light" disabled>Бариста знает, что вы здесь</button>`:`<button class="btn light" ${on(()=>{o.arrived=true;save();toast('Передали бариста, что вы на месте');render()})}>Я уже в кофейне</button>`}</div>`}`;
+}
+
+function Orders(){
+  const row=o=>{const st=status(o),m={accepted:['Принят','var(--foam)','var(--ink)'],brewing:['Готовим','var(--orange)','var(--ink)'],ready:['Можно забирать','var(--ink)','#fff'],done:['Получен','transparent','var(--muted)']}[st];
+    return `<button class="item" ${on(()=>nav.push('status',{id:o.id}))}><div style="width:52px;height:52px;border-radius:16px;background:var(--milk);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:18px">${o.number}</div>
+    <span class="col grow" style="gap:4px"><span class="b" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.lines.map(l=>l.title).join(', ')}</span>
+    <span class="row" style="gap:8px"><span style="font-size:11px;font-weight:600;border-radius:999px;padding:3px 8px;background:${m[1]};color:${m[2]};${st==='done'?'border:1px solid var(--line)':''}">${m[0]}</span><span class="cap">${rub(o.total)}</span></span></span>${ic('chev','width:20px;height:20px;color:var(--muted)')}</button>`};
+  const act=S.orders.filter(o=>status(o)!=='done'), past=S.orders.filter(o=>status(o)==='done');
+  return `<div class="scroll screen"><div class="pad" style="gap:20px"><p class="h1">Заказы</p>
+    ${!S.orders.length?`<span style="font-size:16px;color:var(--muted);line-height:1.45">Здесь появятся ваши заказы. Сделайте первый в меню.</span><button class="btn outline" ${on(()=>nav.tab('menu'))}>Открыть меню</button>`:
+    `${act.length?`<div class="col" style="gap:10px"><span class="lbl">Сейчас</span>${act.map(row).join('')}</div>`:''}${past.length?`<div class="col" style="gap:10px"><span class="lbl">Раньше</span>${past.map(row).join('')}</div>`:''}`}
+  </div></div>`;
+}
+
+function Profile(){
+  const left=FREE_AT-S.stamps, init=(S.name.trim()[0]||'З').toUpperCase();
+  return `<div class="scroll screen"><div class="pad" style="gap:20px"><p class="h1">Профиль</p>
+    <div class="row" style="gap:14px"><div style="width:64px;height:64px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:600;font-size:24px;flex-shrink:0">${esc(init)}</div>
+      <div class="col grow" style="gap:6px"><input id="nm" value="${esc(S.name)}" placeholder="Ваше имя" aria-label="Имя" style="font-weight:600;font-size:18px;border:0;border-bottom:1.5px solid var(--foam);background:none;padding:4px 0;outline:none" ${on(e=>{S.name=e.target.value;save()})}>
+      <input id="ph" value="${esc(S.phone)}" placeholder="Телефон" type="tel" aria-label="Телефон" style="font-size:14px;border:0;border-bottom:1.5px solid var(--foam);background:none;padding:4px 0;outline:none" ${on(e=>{S.phone=e.target.value;save()})}></div></div>
+    <div style="background:var(--ink);color:#fff;border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:14px">
+      <div class="row between"><span class="b" style="font-size:16px">Бонусная карта</span><span class="cap" style="color:var(--soft)">${S.stamps} из ${FREE_AT}</span></div>
+      <div class="row" style="gap:8px">${Array.from({length:FREE_AT},(_,i)=>{const f=i<S.stamps,last=i===FREE_AT-1;return `<div style="flex:1;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;${f?'background:var(--orange)':last?'border:2px solid var(--foam)':'border:2px dashed var(--muted)'}">${last&&!f?'7':''}</div>`}).join('')}</div>
+      <span class="cap" style="color:var(--soft)">${S.freeDrinks>0?`Подарков к использованию: ${S.freeDrinks}. Включите его в корзине.`:`Ещё ${left} ${left<5?'напитка':'напитков'}, и следующий будет в подарок`}</span></div>
+    <div class="col" style="gap:10px"><span class="lbl">Моя кофейня</span><button class="item" ${on(()=>{S.shopId=null;save();render(true)})}>${ic('pin','color:var(--muted)')}<span class="col grow"><span class="b">${esc(shop(S.shopId)?.name||'Не выбрана')}</span><span class="cap">Сменить кофейню</span></span>${ic('chev','width:20px;height:20px;color:var(--muted)')}</button></div>
+    ${S.orders.length?`<div class="col" style="gap:10px"><span class="lbl">Недавние заказы</span>${S.orders.slice(0,3).map(o=>`<div class="item"><span class="col grow"><span class="b" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${o.lines.map(l=>l.title).join(', ')}</span><span class="cap">№ ${o.number} · ${esc(o.shopName)}</span></span><button class="chip sm" ${on(()=>{o.lines.forEach(l=>addLine({...l}));toast('Добавили в корзину');nav.push('cart')})}>Повторить</button></div>`).join('')}</div>`:''}
+  </div></div>`;
+}
+
+function Tabs(){
+  const act=S.orders.some(o=>status(o)!=='done');
+  return `<nav class="tabs">${[['menu','Меню','cup'],['orders','Заказы','list'],['profile','Профиль','user']].map(([id,t,i])=>`<button class="${tab===id?'on':''}" role="tab" aria-selected="${tab===id}" ${on(()=>nav.tab(id))}>${ic(i)}${id==='orders'&&act?'<span class="dot"></span>':''}${t}</button>`).join('')}</nav>`;
+}
+
+render(true);
+</script>
+</body>
+</html>
